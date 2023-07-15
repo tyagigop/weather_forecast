@@ -96,7 +96,7 @@ def get_data(data,detail):
 
 
 def get_weather(lat,lon,detailing_type):
-    time_limit = datetime.datetime.now() - datetime.timedelta(minutes=5)
+    time_limit = datetime.datetime.now() - datetime.timedelta(minutes=10)
 
     try:
         weather_data = WeatherData.objects.get(lat=lat, lon=lon, last_updated__gte=time_limit)

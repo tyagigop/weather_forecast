@@ -10,7 +10,6 @@ from django.http import HttpResponse
 
 
 def home(request):
-    return HttpResponse("<h1> Django Deployed</h1>")
     if request.method == "POST":
         lat = request.POST.get("lat")
         lon = request.POST.get("lon")

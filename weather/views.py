@@ -3,12 +3,14 @@ import requests
 from .models import *
 import datetime
 import time
+from django.http import HttpResponse
 
 
 # Create your views here.
 
 
 def home(request):
+    return HttpResponse("<h1> Django Deployed</h1>")
     if request.method == "POST":
         lat = request.POST.get("lat")
         lon = request.POST.get("lon")

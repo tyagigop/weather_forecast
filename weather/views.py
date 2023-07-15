@@ -3,7 +3,6 @@ import requests
 from .models import *
 import datetime
 import time
-from django.http import HttpResponse
 
 
 # Create your views here.
@@ -43,11 +42,37 @@ def home(request):
     
     city = data['timezone']
 
+
+    temp = round(data['current']['temp'] - 273, 2)
+    feels_like = round(data['current']['feels_like'] - 273, 2)
+    desc = data['current']['weather'][0]['description'].capitalize()
+    x1=datetime.datetime.fromtimestamp(data['current']['sunrise'])
+    x2=datetime.datetime.fromtimestamp(data['current']['sunset'])
+    sunrise = x1.strftime('%H:%M:%S')
+    sunset = x2.strftime('%H:%M:%S')
+
+
+    current_weather = {
+        'temp' : temp,
+        'feels_like' : feels_like,
+        'pressure'   : data['current']['pressure'],
+        'humidity'   : data['current']['humidity'],
+        'visibility' : data['current']['visibility'],
+        
+        'description' : desc,
+        'icon' : data['current']['weather'][0]['icon'],
+        'sunrise' : sunrise,
+        'sunset' : sunset,
+
+    }
+
+
     context = {'weather_data' : weather_data,
             'dat' : dat,
             'city' : city,
             'forecast_type' : forecast_type,
             'detail' : detail,
+            'current_weather' : current_weather,
 
         }
 
@@ -105,13 +130,13 @@ def get_weather(lat,lon,detailing_type):
 
 
         if detailing_type == 'minute':
-            api_url = f'https://api.openweathermap.org/data/2.5/onecall?lat={lat}&lon={lon}&exclude=current,hourly,daily&appid=efd72217fe5988c3d1de1fe44d6e9ebd'
+            api_url = f'https://api.openweathermap.org/data/2.5/onecall?lat={lat}&lon={lon}&exclude=hourly,daily&appid=efd72217fe5988c3d1de1fe44d6e9ebd'
             exclude = 'current,minutely,hourly,daily'
         elif detailing_type == 'hourly':
-            api_url = f'https://api.openweathermap.org/data/2.5/onecall?lat={lat}&lon={lon}&exclude=current,minutely,daily&appid=efd72217fe5988c3d1de1fe44d6e9ebd'
+            api_url = f'https://api.openweathermap.org/data/2.5/onecall?lat={lat}&lon={lon}&exclude=minutely,daily&appid=efd72217fe5988c3d1de1fe44d6e9ebd'
             exclude = 'current,minutely,daily'
         elif detailing_type == 'daily':
-            api_url = f'https://api.openweathermap.org/data/2.5/onecall?lat={lat}&lon={lon}&exclude=current,minutely,hourly&appid=efd72217fe5988c3d1de1fe44d6e9ebd'
+            api_url = f'https://api.openweathermap.org/data/2.5/onecall?lat={lat}&lon={lon}&exclude=minutely,hourly&appid=efd72217fe5988c3d1de1fe44d6e9ebd'
             exclude = 'current,minutely,hourly'
         else:
             # Handle invalid detailing type
@@ -125,8 +150,3 @@ def get_weather(lat,lon,detailing_type):
         weather_data.save()
 
     return data
-
-
-
-
-

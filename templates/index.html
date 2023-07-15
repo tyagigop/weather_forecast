@@ -11,7 +11,7 @@
     .center-t {
       margin: auto;
       width: 60%;
-      border: 3px solid #73AD21;
+      border: 3px solid #e7ede5;
       padding: 10px;
     }
     </style>
@@ -48,9 +48,55 @@
         </div>
     </form>
 
-    <p class="text-center display-6 mt-4">{{ forecast_type }} of {{ city }} Timezone</p>
+    <div class="card mb-3 center-t" style="max-width: 540px;">
+        <div class="row g-0">
+          <div class="col-md-4 text-center">
+            <img src="http://openweathermap.org/img/w/{{ current_weather.icon }}.png"" class="img-fluid rounded-start mt-3 ms-0" style="height: auto; width: 45%;" alt="Image">
+            <p class="card-text"><small class="text-muted">{{current_weather.description}}</small></p>
+        </div>
+          <div class="col-md-8">
+            <div class="card-body">
+              <h5 class="card-title">{{current_weather.temp}} ° C</h5>
+                
+              <div class="row">
+                <div class="col-6">
+                    <p class="card-text">Feels like: {{current_weather.feels_like}}°C</p>
+                </div>
+                <div class="col-6">
+                    <p class="card-text">Humidity : {{current_weather.humidity}}</p>
+                </div>
+                <div class="col-6">
+                    <p class="card-text">Pressure : {{current_weather.pressure}}</p>
+                </div>
+                <div class="col-6">
+                    <p class="card-text">Visibility : {{current_weather.visibility}}</p>
+                </div>
+                <div class="col-6">
+                    <p class="card-text">Sunrise : {{current_weather.sunrise}}</p>
+                </div>
+                <div class="col-6">
+                    <p class="card-text">Sunset : {{current_weather.sunset}}</p>
+                </div>
+
+
+              </div>
+
+
+
+              
+              
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+
+
+    <p class="text-center display-6 mt-4">{{ forecast_type }} of {{ city }} imezone</p>
     <div class="container p-5 text-center">
-        <table class="table table-bordered center-t" style="width: 40%;">
+        <table class="table table-bordered center-t" style="width: 40%;border: 3px solid #b2d6ed">
             {% if detail == 'minutely' %}
                 <thead>
                     <tr>
@@ -68,7 +114,7 @@
                 </tbody>
             </table>
             {% else %}
-            <table class="table table-sm" style="border: 3px solid #73AD21">
+            <table class="table table-sm" style="border: 3px solid #b2d6ed">
                 <thead>
                     <tr>
                         <th scope="col">{{ dat }}</th>

@@ -10,39 +10,46 @@
 <style>
     .center-t {
       margin: auto;
-      width: 60%;
+      width: 90%;
       border: 3px solid #e7ede5;
       padding: 10px;
     }
-    </style>
+    
+    @media (min-width: 992px) {
+      /* For screens larger than 992px */
+      .center-t {
+        width: 70%;
+      }
+    }
+</style>
 <body>
     
     <div style="background-color: rgb(93, 155, 222); height: 110px;" class="position-relative">
         <div class="mx-auto p-4 position-absolute top-50 start-50 translate-middle">
-            <h2>Weather Forecast App</h2>
+            <h2 class="text-center text-white">Weather Forecast App</h2>
         </div>
     </div>
 
     <form class="mt-5 mb-5" method="POST">
         {% csrf_token %}
         <div class="container">
-            <div class="row justify-content-md-center">
-                <div class="col-4 col-lg-2">
-                    <input type="text" class="form-control" required name="lat" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="latitude">
+            <div class="row justify-content-center">
+                <div class="col-sm-6 col-md-4 col-lg-2 mb-3">
+                    <input type="text" class="form-control" required name="lat" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Latitude">
                 </div>
-                <div class="col-md-auto">
-                    <input type="text" class="form-control" required name="lon" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="longitude">
+                <div class="col-sm-6 col-md-4 col-lg-2 mb-3">
+                    <input type="text" class="form-control" required name="lon" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Longitude">
                 </div>
-                <div class="mb-3 col-md-auto">
+                <div class="col-sm-6 col-md-4 col-lg-2 mb-3">
                     <select class="form-select" name="detailing_type" id="detailing_type">
-                        <option selected>Detailing Type</option>
+                        <option selected disabled>Detailing Type</option>
                         <option value="minute">Minutely</option>
                         <option value="hourly">Hourly</option>
                         <option value="daily">Daily</option>
                     </select>
                 </div>
-                <div class="col col-lg-2">
-                    <button type="submit" class="btn btn-outline-info">Check Weather</button>
+                <div class="col-12 col-sm-6 col-lg-2">
+                    <button type="submit" class="btn btn-outline-info w-100">Check Weather</button>
                 </div>
             </div>
         </div>
@@ -51,7 +58,7 @@
     <div class="card mb-3 center-t" style="max-width: 540px;">
         <div class="row g-0">
           <div class="col-md-4 text-center">
-            <img src="http://openweathermap.org/img/w/{{ current_weather.icon }}.png"" class="img-fluid rounded-start mt-3 ms-0" style="height: auto; width: 45%;" alt="Image">
+            <img src="http://openweathermap.org/img/w/{{ current_weather.icon }}.png" class="img-fluid rounded-start mt-3 ms-0" style="height: auto; max-width: 80%;" alt="Weather Icon">
             <p class="card-text"><small class="text-muted">{{current_weather.description}}</small></p>
         </div>
           <div class="col-md-8">
@@ -63,88 +70,80 @@
                     <p class="card-text">Feels like: {{current_weather.feels_like}}°C</p>
                 </div>
                 <div class="col-6">
-                    <p class="card-text">Humidity : {{current_weather.humidity}}</p>
+                    <p class="card-text">Humidity: {{current_weather.humidity}}</p>
                 </div>
                 <div class="col-6">
-                    <p class="card-text">Pressure : {{current_weather.pressure}}</p>
+                    <p class="card-text">Pressure: {{current_weather.pressure}}</p>
                 </div>
                 <div class="col-6">
-                    <p class="card-text">Visibility : {{current_weather.visibility}}</p>
+                    <p class="card-text">Visibility: {{current_weather.visibility}}</p>
                 </div>
                 <div class="col-6">
-                    <p class="card-text">Sunrise : {{current_weather.sunrise}}</p>
+                    <p class="card-text">Sunrise: {{current_weather.sunrise}}</p>
                 </div>
                 <div class="col-6">
-                    <p class="card-text">Sunset : {{current_weather.sunset}}</p>
+                    <p class="card-text">Sunset: {{current_weather.sunset}}</p>
                 </div>
-
-
               </div>
-
-
-
-              
               
             </div>
           </div>
         </div>
       </div>
-
-
-
-
-
-    <p class="text-center display-6 mt-4">{{ forecast_type }} of {{ city }} imezone</p>
-    <div class="container p-5 text-center">
-        <table class="table table-bordered center-t" style="width: 40%;border: 3px solid #b2d6ed">
-            {% if detail == 'minutely' %}
-                <thead>
-                    <tr>
-                        <th scope="col">Time</th>
-                        <th scope="col">Precipitation</th>
-                    </tr>
-                </thead>
-                <tbody class="table-group-divider">
-                    {% for data in weather_data %}
+      
+    <p class="text-center display-6 mt-4">{{ forecast_type }} of {{ city }} timezone</p>
+    <div class="container p-2">
+        <div class="table-responsive">
+            <table class="table table-bordered table-sm center-t" style="border: 3px solid #b2d6ed">
+                {% if detail == 'minutely' %}
+                    <thead>
                         <tr>
-                            <th scope="row">{{ data.date }}</th>
-                            <td>{{ data.precipitation }} (mm)</td>
+                            <th scope="col">Time</th>
+                            <th scope="col">Precipitation</th>
                         </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-            {% else %}
-            <table class="table table-sm" style="border: 3px solid #b2d6ed">
-                <thead>
-                    <tr>
-                        <th scope="col">{{ dat }}</th>
-                        <th scope="col">Temperature</th>
-                        <th scope="col">Pressure</th>
-                        <th scope="col">Humidity</th>
-                        <th scope="col">Wind speed</th>
-                        <th scope="col">Description</th>
-                    </tr>
-                </thead>
-                <tbody class="table-group-divider">
-                    {% for data in weather_data %}
+                    </thead>
+                    <tbody class="table-group-divider">
+                        {% for data in weather_data %}
+                            <tr>
+                                <th scope="row">{{ data.date }}</th>
+                                <td>{{ data.precipitation }} (mm)</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                <table class="table table-bordered table-sm" style="border: 3px solid #b2d6ed">
+                    <thead>
                         <tr>
-                            <th scope="row">{{ data.date }}</th>
-                            <td>{{ data.temp }}° C</td>
-                            <td>{{ data.pressure }} millibars</td>
-                            <td>{{ data.humidity }} g/kg</td>
-                            <td>{{ data.wind_speed }}</td>
-                            <td>
-                                <figure class="image is-50x50">
-                                    <img src="http://openweathermap.org/img/w/{{ data.icon }}.png" alt="Image">
-                                </figure>
-                                {{ data.description }}
-                            </td>
+                            <th scope="col">{{ dat }}</th>
+                            <th scope="col">Temperature</th>
+                            <th scope="col">Pressure</th>
+                            <th scope="col">Humidity</th>
+                            <th scope="col">Wind Speed</th>
+                            <th scope="col">Description</th>
                         </tr>
-                    {% endfor %}
-                </tbody>
-            {% endif %}
-        </table>
-    </div>
+                    </thead>
+                    <tbody class="table-group-divider">
+                        {% for data in weather_data %}
+                            <tr>
+                                <th scope="row">{{ data.date }}</th>
+                                <td>{{ data.temp }}° C</td>
+                                <td>{{ data.pressure }} millibars</td>
+                                <td>{{ data.humidity }} g/kg</td>
+                                <td>{{ data.wind_speed }}</td>
+                                <td>
+                                    <figure class="image is-50x50">
+                                        <img src="http://openweathermap.org/img/w/{{ data.icon }}.png" alt="Weather Icon">
+                                    </figure>
+                                    {{ data.description }}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% endif %}
+            </div>
+        </div>
 
 </body>
 </html>
